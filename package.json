@@ -1,7 +1,7 @@
 {
   "name": "joqim",
   "version": "1.0.0",
-  "description": "This project was bootstrapped with Chakra UI & [Create React App](https://github.com/facebook/create-react-app).",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,14 +10,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iampawan/ReactChakraPortfolio.git"
+    "url": ""
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/iampawan/ReactChakraPortfolio/issues"
-  },
-  "homepage": "https://github.com/iampawan/ReactChakraPortfolio#readme",
   "dependencies": {
     "babel-node": "0.0.1-security",
     "express": "^4.17.1",
