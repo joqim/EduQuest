@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import { EmailIcon, ArrowForwardIcon } from "@chakra-ui/icons"
-import { Text, Stack, Flex, VStack, Heading, HStack, Spacer } from "@chakra-ui/layout";
+import { Text, Stack, Flex, VStack, Heading, HStack, Spacer, Box } from "@chakra-ui/layout";
 import { Divider, Button, SimpleGrid, Icon, Tooltip } from '@chakra-ui/react'
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { GrGallery } from "react-icons/gr";
@@ -15,78 +15,146 @@ class TeacherPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            questions: [
-                {
-                    selectedQuestionType: 'single',
-                    radioValues : ['A', 'B', 'C'],
-                    newRadioValue: '',
-                    checkValues: ['Option 1', 'Option 2', 'Option 3'],
-                    newCheckValue: '',
-                    totalMarks: 0,
-                    negativeMarks: 0
-                },
-                {
-                    selectedQuestionType: 'single',
-                    radioValues : ['A', 'B', 'C'],
-                    newRadioValue: '',
-                    checkValues: ['Option 1', 'Option 2', 'Option 3'],
-                    newCheckValue: '',
-                    totalMarks: 0,
-                    negativeMarks: 0
-                }
-            ],
+            isPublishClicked: false,
             sections: [
                 {
                     name: 'Section 1',
                     description: 'New section 1',
-                    shuffle: true
+                    shuffle: true,
+                    questions: [
+                        {
+                            question: 'Sample question 1 ?',
+                            selectedQuestionType: 'single',
+                            radioValues : ['A', 'B', 'C'],
+                            newRadioValue: '',
+                            checkValues: ['Option 1', 'Option 2', 'Option 3'],
+                            newCheckValue: '',
+                            totalMarks: 0,
+                            negativeMarks: 0
+                        },
+                        {
+                            question: 'Sample question 2',
+                            selectedQuestionType: 'multiple',
+                            radioValues : ['D', 'E', 'F'],
+                            newRadioValue: '',
+                            checkValues: ['Option 4', 'Option 5', 'Option 6'],
+                            newCheckValue: '',
+                            totalMarks: 0,
+                            negativeMarks: 0
+                        }
+                    ]
                 },
                 {
                     name: 'Section 2',
                     description: 'New section 2',
-                    shuffle: false
+                    shuffle: false,
+                    questions: [
+                        {
+                            question: 'Sample question 3',
+                            selectedQuestionType: 'single',
+                            radioValues : ['H', 'I', 'J'],
+                            newRadioValue: '',
+                            checkValues: ['Option 7', 'Option 8', 'Option 9'],
+                            newCheckValue: '',
+                            totalMarks: 0,
+                            negativeMarks: 0,
+                            mandatory: [
+                                {
+                                    question:'Mand question 1',
+                                    type: 'single',
+                                    radioValues: ['M1', 'M2', 'M3']
+                                },
+                                {
+                                    question: 'Mand question2 ',
+                                    type: 'single'
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }
     }
 
-    handleAddQuestion = () => {
-        let questionsArray = this.state.questions;
+    handleAddQuestion = (sectionIndex, questionIndex) => {
+        let sectionsArray = this.state.sections;
+        let sectionObject = sectionsArray[sectionIndex];
+        let questionsArray = sectionObject.questions;
         let newQuestionObject = {
+            question: '',
             selectedQuestionType: 'single',
-            radioValues : [],
+            radioValues : ['Option 1', 'Option 2', 'Option 3'],
             newRadioValue: '',
-            checkValues: [],
+            checkValues: ['Option 1', 'Option 2', 'Option 3'],
             newCheckValue: '',
             totalMarks: 0,
             negativeMarks: 0
         }
         questionsArray.push(newQuestionObject)
+        sectionObject.questions = questionsArray
+        sectionsArray[sectionIndex] = sectionObject
         this.setState({
             ...this.state,
-            questions: questionsArray
+            sections: sectionsArray
         })
     }
 
-    handleDeleteQuestion = () => {
-        let questionsArray = this.state.questions;
+    handleDeleteQuestion = (sectionIndex, questionIndex) => {
+        console.log('questionIndex in delete', questionIndex)
+        let sectionsArray = this.state.sections;
+        let sectionObject = sectionsArray[sectionIndex];
+        let questionsArray = sectionObject.questions;
+        //questionsArray.splice(questionIndex, 1);
         questionsArray.shift()
+        sectionObject.questions = questionsArray
+        sectionsArray[sectionIndex] = sectionObject
         this.setState({
             ...this.state,
-            questions: questionsArray
+            sections: sectionsArray
         })
     }
 
-    handleCloneQuestion = () => {
-        let questionsArray = this.state.questions;
+    handleCloneQuestion = (sectionIndex, questionIndex) => {
+        let sectionsArray = this.state.sections;
+        let sectionObject = sectionsArray[sectionIndex];
+        let questionsArray = sectionObject.questions;
         questionsArray.push(questionsArray[0])
+        //questionsArray.push(questionsArray[questionIndex])
+        sectionObject.questions = questionsArray
+        sectionsArray[sectionIndex] = sectionObject
         this.setState({
             ...this.state,
-            questions: questionsArray
+            sections: sectionsArray
         })
     }
 
-    renderButtonGroup = () => {
+    handleAddNewSection = (sectionIndex, questionIndex) => {
+        let newSectionObject = {
+            name: '',
+            description: '',
+            shuffle: false,
+            questions: [
+                {
+                    question: '',
+                    selectedQuestionType: 'single',
+                    radioValues : ['Option 1', 'Option 2', 'Option 3'],
+                    newRadioValue: '',
+                    checkValues: ['Option 1', 'Option 2', 'Option 3'],
+                    newCheckValue: '',
+                    totalMarks: 0,
+                    negativeMarks: 0
+                }
+            ]
+        }
+        let sectionsArray = this.state.sections;
+        sectionsArray.splice(sectionIndex+1, 0, newSectionObject);
+        this.setState({
+            ...this.state,
+            sections: sectionsArray
+        })
+    }
+
+    renderButtonGroup = (sectionIndex, questionIndex) => {
         return (
             <VStack position='relative' left='35%'>
                 <Tooltip label="Add a new question">
@@ -94,7 +162,7 @@ class TeacherPage extends Component {
                         size='sm' 
                         icon={<AiOutlinePlusCircle />} 
                         isRound='true'
-                        onClick={this.handleAddQuestion} 
+                        onClick={() => this.handleAddQuestion(sectionIndex, questionIndex)} 
                     />
                 </Tooltip>
                 <Tooltip label="Add images">
@@ -106,7 +174,7 @@ class TeacherPage extends Component {
                         ml={2} 
                         icon={<ImCopy />} 
                         isRound='true' 
-                        onClick={this.handleCloneQuestion} 
+                        onClick={() => this.handleCloneQuestion(sectionIndex, questionIndex)} 
                     />
                 </Tooltip>
                 <Tooltip label="Delete question">
@@ -115,12 +183,18 @@ class TeacherPage extends Component {
                         ml={2} 
                         icon={<BiTrashAlt />} 
                         isRound='true'
-                        onClick={this.handleDeleteQuestion}
-                        disabled={this.state.questions.length===1}
+                        onClick={() => this.handleDeleteQuestion(sectionIndex, questionIndex)}
+                        disabled={this.state.sections[sectionIndex].questions.length===1}
                         />
                 </Tooltip>
                 <Tooltip label="Add a new section">
-                    <IconButton size='sm' ml={2} icon={<RiSpotifyLine />} isRound='true' ></IconButton>
+                    <IconButton 
+                        size='sm' 
+                        ml={2} 
+                        icon={<RiSpotifyLine />} 
+                        isRound='true' 
+                        onClick={() => this.handleAddNewSection(sectionIndex, questionIndex)}
+                    />
                 </Tooltip>
             </VStack>
         )
@@ -134,18 +208,55 @@ class TeacherPage extends Component {
                     Create Questions
                 </Text>
                 <Divider borderColor='black' orientation='horizontal' />
-                <Section />
-                <SimpleGrid columns={2}>
-                    {this.state.questions.length>0 && (this.state.questions.map((question, index) => {
-                        return (
-                            <>
-                                <Question key={index}/>
-                                {index===0 && this.renderButtonGroup()}
-                                {index!=0 && (<br />)}
-                            </>
-                        )
-                    }))}
-                </SimpleGrid>
+                {this.state.sections.length>0 && (this.state.sections.map((section, sectionIndex) => {
+                    return (
+                        <>
+                            <Section key={sectionIndex} sectionValues={this.state.sections[sectionIndex]}/>
+                            <SimpleGrid columns={2}>
+                                {section.questions.length>0 && (section.questions.map((question, questionIndex) => {
+                                    return (
+                                        <>
+                                            <Question 
+                                                key={questionIndex} 
+                                                questionValue={this.state.sections[sectionIndex].questions[questionIndex]}
+                                                isPublishClicked={this.state.isPublishClicked}
+                                            />
+                                            {questionIndex===0 && this.renderButtonGroup(sectionIndex, questionIndex)}
+                                            {/* {this.renderButtonGroup(sectionIndex, questionIndex)} */}
+                                            {questionIndex!=0 && (<br />)}
+                                        </>
+                                    )
+                                }))}
+                            </SimpleGrid>
+                            <br/>
+                            {sectionIndex!=this.state.sections.length-1 && (
+                                <>
+                                    <Text fontSize='2xl' textAlign='center' mt='5'>-SECTION BREAK-</Text>
+                                </>                                    
+                            )}
+                        </>
+                    )
+                }))}
+                <Flex>
+                    <Spacer />
+                    <Box>
+                        <Button colorScheme='teal' variant='ghost' size='sm' mr='5'>
+                            Discard
+                        </Button>
+                        <Button colorScheme='teal' 
+                            variant='solid' 
+                            size='sm'
+                            mr='5'
+                            onClick={() => {
+                                this.setState({
+                                    ...this.state,
+                                    isPublishClicked: true
+                                })
+                            }}>
+                            Publish
+                        </Button>
+                    </Box>
+                </Flex>
             </Stack>
         );
     }

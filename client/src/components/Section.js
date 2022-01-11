@@ -1,15 +1,49 @@
-import { Box, Checkbox, Text} from '@chakra-ui/react'
+import { Box, Checkbox, Text, Input} from '@chakra-ui/react'
 import { Component } from 'react'
 
 class SectionPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+      name: '',
+      description: '',
+      shuffle: false
     }
   }
 
+  componentDidMount = () => {
+    let props = this.props.sectionValues;
+    this.setState({
+      ...this.state,
+      name: props.name,
+      description: props.description,
+      shuffle: props.shuffle
+    })
+  }
+
+  handleSectionNameChange = (event) => {
+    this.setState({
+      ...this.state,
+      name: event.target.value
+    })
+  }
+
+  handleSectionDescriptionChange = (event) => {
+    this.setState({
+      ...this.state,
+      description: event.target.value
+    })
+  }
+
+  handleSectionShuffleChange = (event) => {
+    this.setState({
+      ...this.state,
+      shuffle: event.target.checked
+    })
+  }
+
   render() {
+    console.log('props in section', this.props)
     return (
         <Box borderWidth='1px' boxShadow='base' borderRadius='lg' overflow='hidden' w='5xl'>
             <Box p='6' pt='3'>
@@ -20,18 +54,28 @@ class SectionPage extends Component {
                 lineHeight='tight'
                 isTruncated
                 >
-                Section Name
+                  <Input 
+                    variant='unstyled' 
+                    placeholder='Enter section name' 
+                    value={this.state.name}
+                    onChange={this.handleSectionNameChange}
+                  />
                 </Box>
 
-                <Box>
-                Description
-                <Box as='span' color='gray.600' fontSize='sm'>
+                <Box color='gray.600'>
+                  <Input 
+                    variant='unstyled' 
+                    placeholder='Enter description name (optional)' 
+                    value={this.state.description}
+                    onChange={this.handleSectionDescriptionChange}
+                  />
+                {/* <Box as='span' color='gray.600' fontSize='sm'>
                     &nbsp; (optional)
-                </Box>
+                </Box> */}
                 </Box>
             </Box>
           <Box m='5' as='span' color='gray.600' fontSize='sm'>
-            <Checkbox mb='3'>
+            <Checkbox mb='3' checked={this.state.shuffle} onChange={this.handleSectionShuffleChange}>
               <Text color='gray.600' fontSize='sm'>
                 Shuffle Questions
               </Text>
