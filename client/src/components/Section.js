@@ -12,6 +12,7 @@ class SectionPage extends Component {
   }
 
   componentDidMount = () => {
+    console.log('inside component did mount - section')
     let props = this.props.sectionValues;
     this.setState({
       ...this.state,
@@ -40,6 +41,10 @@ class SectionPage extends Component {
       ...this.state,
       shuffle: event.target.checked
     })
+  }
+
+  getAlert() {
+    return this.state;
   }
 
   render() {

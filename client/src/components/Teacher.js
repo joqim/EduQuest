@@ -76,6 +76,11 @@ class TeacherPage extends Component {
         }
     }
 
+    handlePublishClicked = () => {
+        // let gotThis = this.sectionIndex.current.getAlert();
+        // console.log('gotThis', gotThis)
+    }
+
     handleAddQuestion = (sectionIndex, questionIndex) => {
         let sectionsArray = this.state.sections;
         let sectionObject = sectionsArray[sectionIndex];
@@ -147,7 +152,11 @@ class TeacherPage extends Component {
             ]
         }
         let sectionsArray = this.state.sections;
-        sectionsArray.splice(sectionIndex+1, 0, newSectionObject);
+        sectionsArray.push(newSectionObject)
+        //when using splice, the sections array is structured as expected
+        //but component did mount in section is assuming the final index is the newly added section.
+        //sectionsArray.splice(sectionIndex+1, 0, newSectionObject);
+        console.log('sectionsArray', sectionsArray)
         this.setState({
             ...this.state,
             sections: sectionsArray
@@ -209,9 +218,13 @@ class TeacherPage extends Component {
                 </Text>
                 <Divider borderColor='black' orientation='horizontal' />
                 {this.state.sections.length>0 && (this.state.sections.map((section, sectionIndex) => {
+                    console.log('sectionIndex', sectionIndex)
                     return (
                         <>
-                            <Section key={sectionIndex} sectionValues={this.state.sections[sectionIndex]}/>
+                            <Section
+                                key={sectionIndex} 
+                                sectionValues={this.state.sections[sectionIndex]}
+                            />
                             <SimpleGrid columns={2}>
                                 {section.questions.length>0 && (section.questions.map((question, questionIndex) => {
                                     return (
@@ -219,7 +232,6 @@ class TeacherPage extends Component {
                                             <Question 
                                                 key={questionIndex} 
                                                 questionValue={this.state.sections[sectionIndex].questions[questionIndex]}
-                                                isPublishClicked={this.state.isPublishClicked}
                                             />
                                             {questionIndex===0 && this.renderButtonGroup(sectionIndex, questionIndex)}
                                             {/* {this.renderButtonGroup(sectionIndex, questionIndex)} */}
@@ -247,12 +259,7 @@ class TeacherPage extends Component {
                             variant='solid' 
                             size='sm'
                             mr='5'
-                            onClick={() => {
-                                this.setState({
-                                    ...this.state,
-                                    isPublishClicked: true
-                                })
-                            }}>
+                            onClick={this.handlePublishClicked}>
                             Publish
                         </Button>
                     </Box>
