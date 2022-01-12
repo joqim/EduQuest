@@ -18,26 +18,26 @@ class TeacherPage extends Component {
             isPublishClicked: false,
             sections: [
                 {
-                    name: 'Section 1',
-                    description: 'New section 1',
+                    name: 'React basics',
+                    description: 'Fundamental questions on React',
                     shuffle: true,
                     questions: [
                         {
-                            question: 'Sample question 1 ?',
+                            question: 'What of the following is used in React.js to increase performance?',
                             selectedQuestionType: 'single',
-                            radioValues : ['A', 'B', 'C'],
+                            radioValues : ['Original DOM', 'Virtual DOM', 'Both A and B', 'None of the above'],
                             newRadioValue: '',
-                            checkValues: ['Option 1', 'Option 2', 'Option 3'],
+                            checkValues: ['Original DOM', 'Virtual DOM', 'Both A and B', 'None of the above'],
                             newCheckValue: '',
                             totalMarks: 0,
                             negativeMarks: 0
                         },
                         {
-                            question: 'Sample question 2',
+                            question: 'Which of the following keyword is used to create a class inheritance?',
                             selectedQuestionType: 'multiple',
-                            radioValues : ['D', 'E', 'F'],
+                            radioValues : ['Create', 'Inherits', 'Extends', 'This'],
                             newRadioValue: '',
-                            checkValues: ['Option 4', 'Option 5', 'Option 6'],
+                            checkValues: ['Create', 'Inherits', 'Extends', 'This'],
                             newCheckValue: '',
                             totalMarks: 0,
                             negativeMarks: 0
@@ -45,28 +45,38 @@ class TeacherPage extends Component {
                     ]
                 },
                 {
-                    name: 'Section 2',
-                    description: 'New section 2',
+                    name: 'Webpack basics',
+                    description: 'Fundamental questions on Webpack',
                     shuffle: false,
                     questions: [
                         {
-                            question: 'Sample question 3',
+                            question: 'What is the use of "webpack" command in React.js?',
                             selectedQuestionType: 'single',
-                            radioValues : ['H', 'I', 'J'],
+                            radioValues : [
+                                'Transpile all the JavaScript down into one file', 
+                                'Runs React local development server', 
+                                'Module bundler',
+                                'None of the above'
+                            ],
                             newRadioValue: '',
-                            checkValues: ['Option 7', 'Option 8', 'Option 9'],
+                            checkValues: [
+                                'Transpile all the JavaScript down into one file',
+                                'Runs React local development server',
+                                'Module bundler'
+                            ],
                             newCheckValue: '',
                             totalMarks: 0,
                             negativeMarks: 0,
                             mandatory: [
                                 {
-                                    question:'Mand question 1',
+                                    question:'What is the default port where webpack-server runs?',
                                     type: 'single',
-                                    radioValues: ['M1', 'M2', 'M3']
+                                    radioValues: ['3000', '8080', '3030', '6060']
                                 },
                                 {
-                                    question: 'Mand question2 ',
-                                    type: 'single'
+                                    question: 'What is Babel?',
+                                    type: 'multiple',
+                                    radioValues: ['Javascript transpiler', 'Javascript interpreter', 'Javascript compiler']
                                 }
                             ]
                         }
@@ -88,9 +98,9 @@ class TeacherPage extends Component {
         let newQuestionObject = {
             question: '',
             selectedQuestionType: 'single',
-            radioValues : ['Option 1', 'Option 2', 'Option 3'],
+            radioValues : [],
             newRadioValue: '',
-            checkValues: ['Option 1', 'Option 2', 'Option 3'],
+            checkValues: [],
             newCheckValue: '',
             totalMarks: 0,
             negativeMarks: 0
@@ -142,9 +152,9 @@ class TeacherPage extends Component {
                 {
                     question: '',
                     selectedQuestionType: 'single',
-                    radioValues : ['Option 1', 'Option 2', 'Option 3'],
+                    radioValues : [],
                     newRadioValue: '',
-                    checkValues: ['Option 1', 'Option 2', 'Option 3'],
+                    checkValues: [],
                     newCheckValue: '',
                     totalMarks: 0,
                     negativeMarks: 0
@@ -258,7 +268,7 @@ class TeacherPage extends Component {
                         <Button colorScheme='teal' 
                             variant='solid' 
                             size='sm'
-                            mr='5'
+                            mr='20'
                             onClick={this.handlePublishClicked}>
                             Publish
                         </Button>

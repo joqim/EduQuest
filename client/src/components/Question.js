@@ -34,7 +34,7 @@ class QuestionPage extends Component {
         let mandatory = [];
         let boxHeight;
         if(props.mandatory && props.mandatory.length>0) {
-            boxHeight = 240 + 260*props.mandatory.length
+            boxHeight = 240 + 270*props.mandatory.length
             boxHeight = boxHeight.toString()
             mandatory = props.mandatory;
             isMandatoryGiven = true
@@ -127,7 +127,7 @@ class QuestionPage extends Component {
                                 />
                                 <Tooltip label="Delete option">
                                     <IconButton
-                                        color='red'
+                                        // color='red'
                                         ml='2' 
                                         size='sm' 
                                         icon={<MdRemoveCircleOutline />} 
@@ -166,7 +166,7 @@ class QuestionPage extends Component {
             <Stack direction='column' mt='4'>
                 {this.state.checkValues.map((value, checkValueIndex) => {
                     return (
-                        <Checkbox colorScheme='green' size='sm' key={checkValueIndex}>
+                        <Checkbox colorScheme='blue' size='sm' key={checkValueIndex}>
                             <Input size='sm' 
                                 value={this.state.newCheckValue}
                                 placeholder='Add option..'
@@ -176,7 +176,7 @@ class QuestionPage extends Component {
                             />
                             <Tooltip label="Delete option">
                                 <IconButton
-                                    color='red'
+                                    // color='red'
                                     ml='2' 
                                     size='sm' 
                                     icon={<MdRemoveCircleOutline />} 
@@ -277,10 +277,10 @@ class QuestionPage extends Component {
             }
         }
         if(mandatory.length>0) {
-            boxHeight = 240 + 260*mandatory.length
+            boxHeight = 240 + 270*mandatory.length
             boxHeight = boxHeight.toString()
         } else {
-            boxHeight='260px'
+            boxHeight='270px'
         }
         this.setState({
             ...this.state,
@@ -367,7 +367,7 @@ class QuestionPage extends Component {
                 </Stack>
                 </Box>
                 <Divider ml='-30' borderColor='black' orientation='vertical' />
-                <Box height='120px' ml='-310'>
+                <Box height={this.state.boxHeight} ml='-310' overflowY='scroll'>
                     <FormControl>
                         <Input 
                             size='sm' 
@@ -389,6 +389,7 @@ class QuestionPage extends Component {
                                             fontSize='1xl' 
                                             textAlign='center' 
                                             mt='5'
+                                            mb='2'
                                         >-OR-</Text>
                                         <Input 
                                             size='sm' 
@@ -404,6 +405,7 @@ class QuestionPage extends Component {
                             } else if(mand.type==='multiple') {
                                 return (
                                     <>
+                                        <Text fontSize='1xl' textAlign='center' mt='5'>-OR-</Text>
                                         <Input
                                             key={mandKey}
                                             size='sm' 
@@ -413,13 +415,14 @@ class QuestionPage extends Component {
                                             variant='unstyled'
                                             readOnly
                                         />
-                                        <Text fontSize='2xl' textAlign='center' mt='5'>-OR-</Text>
+
                                         {this.renderMultipleChoice()}
                                     </>      
                                 )
                             } else if(mand.type==='paragraph') {
                                 return (
                                     <>
+                                        <Text fontSize='1xl' textAlign='center' mt='5'>-OR-</Text>
                                         <Input 
                                             size='sm' 
                                             placeholder='Enter question'
@@ -428,13 +431,13 @@ class QuestionPage extends Component {
                                             variant='unstyled'
                                             readOnly
                                         />
-                                        <Text fontSize='2xl' textAlign='center' mt='5'>-OR-</Text>
                                         {this.renderParagraph()}
                                     </>         
                                 )
                             } else if(mand.type==='upload') {
                                 return (
                                     <>
+                                        <Text fontSize='1xl' textAlign='center' mt='5'>-OR-</Text>
                                         <Input 
                                             size='sm' 
                                             placeholder='Enter question'
@@ -443,7 +446,6 @@ class QuestionPage extends Component {
                                             variant='unstyled'
                                             readOnly
                                         />
-                                        <Text fontSize='2xl' textAlign='center' mt='5'>-OR-</Text>
                                         {this.renderFileUpload()}
                                     </>         
                                 )

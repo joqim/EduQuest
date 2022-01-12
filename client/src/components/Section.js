@@ -80,7 +80,7 @@ class SectionPage extends Component {
                 </Box>
             </Box>
           <Box m='5' as='span' color='gray.600' fontSize='sm'>
-            <Checkbox mb='3' checked={this.state.shuffle} onChange={this.handleSectionShuffleChange}>
+            <Checkbox colorScheme='green' mb='3' checked={this.state.shuffle} onChange={this.handleSectionShuffleChange}>
               <Text color='gray.600' fontSize='sm'>
                 Shuffle Questions
               </Text>
