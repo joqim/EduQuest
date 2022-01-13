@@ -92,6 +92,7 @@ class TeacherPage extends Component {
     }
 
     handleAddQuestion = (sectionIndex, questionIndex) => {
+        console.log('inside handleAddQuestion in parent', sectionIndex, questionIndex)
         let sectionsArray = this.state.sections;
         let sectionObject = sectionsArray[sectionIndex];
         let questionsArray = sectionObject.questions;
@@ -105,8 +106,11 @@ class TeacherPage extends Component {
             totalMarks: 0,
             negativeMarks: 0
         }
-        questionsArray.push(newQuestionObject)
+        questionsArray.splice(questionIndex+1, 0, newQuestionObject);
+        console.log('updated questionsArray', questionsArray)
+        //questionsArray.push(newQuestionObject)
         sectionObject.questions = questionsArray
+        console.log('sectionObject', sectionObject)
         sectionsArray[sectionIndex] = sectionObject
         this.setState({
             ...this.state,
@@ -119,8 +123,8 @@ class TeacherPage extends Component {
         let sectionsArray = this.state.sections;
         let sectionObject = sectionsArray[sectionIndex];
         let questionsArray = sectionObject.questions;
-        //questionsArray.splice(questionIndex, 1);
-        questionsArray.shift()
+        questionsArray.splice(questionIndex, 1);
+        //questionsArray.shift()
         sectionObject.questions = questionsArray
         sectionsArray[sectionIndex] = sectionObject
         this.setState({
@@ -133,8 +137,7 @@ class TeacherPage extends Component {
         let sectionsArray = this.state.sections;
         let sectionObject = sectionsArray[sectionIndex];
         let questionsArray = sectionObject.questions;
-        questionsArray.push(questionsArray[0])
-        //questionsArray.push(questionsArray[questionIndex])
+        questionsArray.splice(questionIndex+1, 0, questionsArray[questionIndex]);
         sectionObject.questions = questionsArray
         sectionsArray[sectionIndex] = sectionObject
         this.setState({
@@ -162,61 +165,11 @@ class TeacherPage extends Component {
             ]
         }
         let sectionsArray = this.state.sections;
-        sectionsArray.push(newSectionObject)
-        //when using splice, the sections array is structured as expected
-        //but component did mount in section is assuming the final index is the newly added section.
-        //sectionsArray.splice(sectionIndex+1, 0, newSectionObject);
-        console.log('sectionsArray', sectionsArray)
+        sectionsArray.splice(sectionIndex+1, 0, newSectionObject);
         this.setState({
             ...this.state,
             sections: sectionsArray
         })
-    }
-
-    renderButtonGroup = (sectionIndex, questionIndex) => {
-        return (
-            <VStack position='relative' left='35%'>
-                <Tooltip label="Add a new question">
-                    <IconButton 
-                        size='sm' 
-                        icon={<AiOutlinePlusCircle />} 
-                        isRound='true'
-                        onClick={() => this.handleAddQuestion(sectionIndex, questionIndex)} 
-                    />
-                </Tooltip>
-                <Tooltip label="Add images">
-                    <IconButton size='sm' ml={2} icon={<GrGallery />} isRound='true' ></IconButton>
-                </Tooltip>
-                <Tooltip label="Clone question">
-                    <IconButton 
-                        size='sm' 
-                        ml={2} 
-                        icon={<ImCopy />} 
-                        isRound='true' 
-                        onClick={() => this.handleCloneQuestion(sectionIndex, questionIndex)} 
-                    />
-                </Tooltip>
-                <Tooltip label="Delete question">
-                    <IconButton 
-                        size='sm' 
-                        ml={2} 
-                        icon={<BiTrashAlt />} 
-                        isRound='true'
-                        onClick={() => this.handleDeleteQuestion(sectionIndex, questionIndex)}
-                        disabled={this.state.sections[sectionIndex].questions.length===1}
-                        />
-                </Tooltip>
-                <Tooltip label="Add a new section">
-                    <IconButton 
-                        size='sm' 
-                        ml={2} 
-                        icon={<RiSpotifyLine />} 
-                        isRound='true' 
-                        onClick={() => this.handleAddNewSection(sectionIndex, questionIndex)}
-                    />
-                </Tooltip>
-            </VStack>
-        )
     }
 
     render() {
@@ -228,24 +181,29 @@ class TeacherPage extends Component {
                 </Text>
                 <Divider borderColor='black' orientation='horizontal' />
                 {this.state.sections.length>0 && (this.state.sections.map((section, sectionIndex) => {
-                    console.log('sectionIndex', sectionIndex)
+                    console.log('passing section', this.state.sections[sectionIndex].name)
                     return (
                         <>
                             <Section
                                 key={sectionIndex} 
                                 sectionValues={this.state.sections[sectionIndex]}
+                                sectionIndex={sectionIndex}
                             />
                             <SimpleGrid columns={2}>
                                 {section.questions.length>0 && (section.questions.map((question, questionIndex) => {
+                                    //console.log('passing question', section.questions)
                                     return (
                                         <>
-                                            <Question 
+                                            <Question
                                                 key={questionIndex} 
                                                 questionValue={this.state.sections[sectionIndex].questions[questionIndex]}
+                                                questionIndex={questionIndex}
+                                                sectionIndex={sectionIndex}
+                                                addQuestion={this.handleAddQuestion}
+                                                deleteQuestion={this.handleDeleteQuestion}
+                                                cloneQuestion={this.handleCloneQuestion}
+                                                addNewSection={this.handleAddNewSection}
                                             />
-                                            {questionIndex===0 && this.renderButtonGroup(sectionIndex, questionIndex)}
-                                            {/* {this.renderButtonGroup(sectionIndex, questionIndex)} */}
-                                            {questionIndex!=0 && (<br />)}
                                         </>
                                     )
                                 }))}

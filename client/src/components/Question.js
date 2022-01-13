@@ -3,12 +3,17 @@ import { AddIcon } from "@chakra-ui/icons"
 import { Stack, Text } from "@chakra-ui/layout";
 import { Divider, Box, SimpleGrid, Select, Input, 
     FormHelperText, FormControl, RadioGroup, Radio, Button, Checkbox,
-    Textarea, InputRightAddon, InputGroup, Tooltip
+    Textarea, InputRightAddon, InputGroup, Tooltip, VStack
 } from '@chakra-ui/react'
 import { IconButton } from "@chakra-ui/button";
 import { FilePond } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 import { MdRemoveCircleOutline } from "react-icons/md";
+import { ImCopy } from "react-icons/im";
+import { GrGallery } from "react-icons/gr";
+import { AiOutlinePlusCircle } from "react-icons/ai";
+import { BiTrashAlt } from "react-icons/bi";
+import { RiSpotifyLine } from "react-icons/ri";
 
 class QuestionPage extends Component {
     constructor(props) {
@@ -24,12 +29,16 @@ class QuestionPage extends Component {
             negativeMarks: 0,
             mandatory: [],
             boxHeight: '240',
-            isMandatoryGiven: false
+            isMandatoryGiven: false,
+            renderButtonGroup: false,
+            questionIndex: null,
+            sectionIndex: null
         }
     }
 
     componentDidMount = () => {
         let props = this.props.questionValue;
+        //console.log('question value in component mound', props)
         let isMandatoryGiven = false;
         let mandatory = [];
         let boxHeight;
@@ -53,8 +62,41 @@ class QuestionPage extends Component {
             negativeMarks: props.negativeMarks,
             mandatory: mandatory,
             boxHeight,
-            isMandatoryGiven
+            isMandatoryGiven,
+            questionIndex: this.props.questionIndex,
+            sectionIndex: this.props.sectionIndex
         })
+    }
+
+    componentWillReceiveProps = (nextProps) => {
+            let props = nextProps.questionValue;
+            let isMandatoryGiven = false;
+            let mandatory = [];
+            let boxHeight;
+            if(props.mandatory && props.mandatory.length>0) {
+                boxHeight = 240 + 270*props.mandatory.length
+                boxHeight = boxHeight.toString()
+                mandatory = props.mandatory;
+                isMandatoryGiven = true
+            } else {
+                boxHeight='260px'
+            }
+            this.setState({
+                ...this.state,
+                question: props.question,
+                selectedQuestionType: props.selectedQuestionType,
+                radioValues: props.radioValues,
+                newRadioValue: props.newRadioValue,
+                checkValues: props.checkValues,
+                newCheckValue: props.newCheckValue,
+                totalMarks: props.totalMarks,
+                negativeMarks: props.negativeMarks,
+                mandatory: mandatory,
+                boxHeight,
+                isMandatoryGiven,
+                questionIndex: nextProps.questionIndex,
+                sectionIndex: nextProps.sectionIndex
+            })
     }
 
     handleKeyDownForRadio = (event) => {
@@ -101,13 +143,8 @@ class QuestionPage extends Component {
     })
   }
 
-//   handleRadioOptionChange = (event, radioIndex) => {
-//     console.log('inside handleRadioOptionChange', radioIndex)
-//     let existingRadioValues = this.state.radioValues;
-//   }
-
   renderSingleChoice = () => {
-      console.log('inside renderSingleChoice')
+    //console.log('inside renderSingleChoice')
     return (
         <>
             <RadioGroup mt='4'>
@@ -258,7 +295,7 @@ class QuestionPage extends Component {
     }
 
     handleMandatoryNumberChange = (event) => {
-        console.log('inside mand num change', event.target.value)
+        //console.log('inside mand num change', event.target.value)
         let boxHeight;
         let mandatory = [];
         let iterations = event.target.value
@@ -297,12 +334,12 @@ class QuestionPage extends Component {
     }
 
     handleMandQuestionChange = (event) => {
-        console.log('inside handleMandQuestionChange');
+        //console.log('inside handleMandQuestionChange');
         console.log(event.target.name);
         console.log(event.target.value);
         let mandatoryArray = this.state.mandatory;
         mandatoryArray[event.target.name].question = event.target.value;
-        console.log('mandatoryArray', mandatoryArray)
+        //console.log('mandatoryArray', mandatoryArray)
         // let name = event.target.name;
         // let value = event.target.value;
         this.setState({
@@ -311,10 +348,72 @@ class QuestionPage extends Component {
         })
     }
 
+    renderButtonGroup = () => {
+        //console.log('inside renderBButtonGroup in child', this.state.sectionIndex);
+        let questionIndex = this.state.questionIndex;
+        let sectionIndex = this.state.sectionIndex;
+        return (
+            <>
+                <VStack position='relative' left='35%'>
+                <Tooltip label="Add a new question">
+                    <IconButton 
+                        size='sm' 
+                        icon={<AiOutlinePlusCircle />} 
+                        isRound='true'
+                        onClick={() => this.props.addQuestion(sectionIndex, questionIndex)} 
+                    />
+                </Tooltip>
+                <Tooltip label="Add images">
+                    <IconButton size='sm' ml={2} icon={<GrGallery />} isRound='true' ></IconButton>
+                </Tooltip>
+                <Tooltip label="Clone question">
+                    <IconButton 
+                        size='sm' 
+                        ml={2} 
+                        icon={<ImCopy />} 
+                        isRound='true' 
+                        onClick={() => this.props.cloneQuestion(sectionIndex, questionIndex)} 
+                    />
+                </Tooltip>
+                <Tooltip label="Delete question">
+                    <IconButton 
+                        size='sm' 
+                        ml={2} 
+                        icon={<BiTrashAlt />} 
+                        isRound='true'
+                        onClick={() => this.props.deleteQuestion(sectionIndex, questionIndex)}
+                        //disabled={this.state.sections[sectionIndex].questions.length===1}
+                        />
+                </Tooltip>
+                <Tooltip label="Add a new section">
+                    <IconButton 
+                        size='sm' 
+                        ml={2} 
+                        icon={<RiSpotifyLine />} 
+                        isRound='true' 
+                        onClick={() => this.props.addNewSection(sectionIndex, questionIndex)}
+                    />
+                </Tooltip>
+            </VStack>
+            </>
+        )
+    }
+
+    handleQuestionClick = () => {
+        this.renderButtonGroup()
+    }
+
   render() {
-    console.log('state in question', this.state)
+    //console.log('state in question', this.state)
     return (
-        <Box p='6' borderWidth='1px' boxShadow='base' borderRadius='lg' overflow='hidden' w='5xl' mb='2'>
+        <>
+        <Box onClick={() => this.setState({
+            ...this.state,
+            renderButtonGroup: true
+        })} p='6' 
+        borderWidth='1px' boxShadow='base' borderRadius='lg' overflow='hidden' 
+        w='5xl' mb='2'
+        >
             <SimpleGrid columns={3} spacing={10}>
                 <Box height={this.state.boxHeight}>
                 <Stack>
@@ -455,6 +554,9 @@ class QuestionPage extends Component {
                 </Box>
             </SimpleGrid>
         </Box>
+        {this.state.renderButtonGroup && (this.renderButtonGroup())}
+        {!this.state.renderButtonGroup && <br />}
+        </>
     );
   }
 }

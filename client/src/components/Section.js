@@ -7,19 +7,36 @@ class SectionPage extends Component {
     this.state = {
       name: '',
       description: '',
-      shuffle: false
+      shuffle: false,
+      sectionIndex: null
     }
   }
 
   componentDidMount = () => {
-    console.log('inside component did mount - section')
+    //console.log('inside section comp did mount' , this.props.sectionIndex)
     let props = this.props.sectionValues;
     this.setState({
       ...this.state,
       name: props.name,
       description: props.description,
-      shuffle: props.shuffle
+      shuffle: props.shuffle,
+      sectionIndex: this.props.sectionIndex
     })
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    //console.log('props inside componentWillReceiveProps', nextProps.sectionValues.name, nextProps.sectionIndex)
+    let newProps = nextProps.sectionValues
+    // if(newProps.name && newProps.description && newProps.shuffle) {
+      //console.log('setting state for', nextProps.sectionIndex, 'as', newProps.name)
+      this.setState({
+        ...this.state,
+        name: newProps.name,
+        description: newProps.description,
+        shuffle: newProps.shuffle,
+        sectionIndex: nextProps.sectionIndex
+      })
+    // }
   }
 
   handleSectionNameChange = (event) => {
@@ -43,12 +60,8 @@ class SectionPage extends Component {
     })
   }
 
-  getAlert() {
-    return this.state;
-  }
-
   render() {
-    console.log('props in section', this.props)
+    console.log('state in section', this.state, 'section Index', this.state.sectionIndex)
     return (
         <Box borderWidth='1px' boxShadow='base' borderRadius='lg' overflow='hidden' w='5xl'>
             <Box p='6' pt='3'>
