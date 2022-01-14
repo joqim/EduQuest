@@ -410,7 +410,11 @@ class QuestionPage extends Component {
                 //prevent infinite rendering
                 let object = {
                     question:'',
-                    type: 'single'
+                    type: 'single',
+                    radioValues: [],
+                    checkValues: [],
+                    radioValuesShow: [],
+                    checkValuesShow: []
                 }
                 mandatory.push(object)
             }
@@ -607,7 +611,7 @@ class QuestionPage extends Component {
                         {this.state.selectedQuestionType==='paragraph' && this.renderParagraph()}
                         {this.state.selectedQuestionType==='upload' && this.renderFileUpload()}
 
-                        {this.state.mandatory.length>0 && this.state.mandatory.map( (mand, mandKey) => {
+                        {this.state.mandatory.length>0 && this.state.mandatory.map((mand, mandKey) => {
                             if(mand.type==='single') {
                                 return (
                                     <>
