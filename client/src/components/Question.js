@@ -20,9 +20,11 @@ class QuestionPage extends Component {
         this.state = {
             question: '',
             selectedQuestionType: 'single',
-            radioValues : ['A', 'B', 'C'],
+            radioValues : [],
+            radioValuesShow: [],
             newRadioValue: '',
             checkValues: ['Option 1', 'Option 2', 'Option 3'],
+            checkValuesShow: [],
             newCheckValue: '',
             totalMarks: 0,
             negativeMarks: 0,
@@ -37,6 +39,13 @@ class QuestionPage extends Component {
 
     componentDidMount = () => {
         let props = this.props.questionValue;
+        let radioValuesShow = [], checkValuesShow = [];
+        for(let i=0; i<props.radioValuesShow.length; i++) {
+            radioValuesShow.push(false)
+        }
+        for(let i=0; i<props.checkValues.length; i++) {
+            checkValuesShow.push(false)
+        }
         //console.log('question value in component mound', props)
         let isMandatoryGiven = false;
         let mandatory = [];
@@ -59,6 +68,8 @@ class QuestionPage extends Component {
             newCheckValue: props.newCheckValue,
             totalMarks: props.totalMarks,
             negativeMarks: props.negativeMarks,
+            radioValuesShow,
+            checkValuesShow,
             mandatory: mandatory,
             boxHeight,
             isMandatoryGiven,
@@ -69,6 +80,13 @@ class QuestionPage extends Component {
 
     componentWillReceiveProps = (nextProps) => {
             let props = nextProps.questionValue;
+            let radioValuesShow = [], checkValuesShow = [];
+            for(let i=0; i<props.radioValuesShow.length; i++) {
+                radioValuesShow.push(false)
+            }
+            for(let i=0; i<props.checkValues.length; i++) {
+                checkValuesShow.push(false)
+            }
             let isMandatoryGiven = false;
             let mandatory = [];
             let boxHeight;
@@ -90,6 +108,8 @@ class QuestionPage extends Component {
                 newCheckValue: props.newCheckValue,
                 totalMarks: props.totalMarks,
                 negativeMarks: props.negativeMarks,
+                radioValuesShow,
+                checkValuesShow,
                 mandatory: mandatory,
                 boxHeight,
                 isMandatoryGiven,
@@ -105,10 +125,13 @@ class QuestionPage extends Component {
 
             radioValues.push(this.state.newRadioValue);
             console.log('updatedRadioValues', radioValues)
+            let radioValuesShow = this.state.radioValuesShow;
+            radioValuesShow.push(false);
             this.setState({
                 ...this.state,
                 radioValues: radioValues,
-                newRadioValue: ''
+                newRadioValue: '',
+                radioValuesShow
             })
         }
     }
@@ -120,10 +143,13 @@ class QuestionPage extends Component {
 
         checkValues.push(this.state.newCheckValue);
         console.log('updatedcheckValues', checkValues)
+        let checkValuesShow = this.state.checkValuesShow;
+        checkValuesShow.push(false);
         this.setState({
             ...this.state,
             checkValues: checkValues,
-            newCheckValue: ''
+            newCheckValue: '',
+            checkValuesShow
         })
     }
   }
@@ -158,6 +184,19 @@ class QuestionPage extends Component {
                             <Radio 
                                 value={value} 
                                 key={radioValueIndex}
+                                onClick={() => {
+                                    let radioValuesShow = this.state.radioValuesShow;
+                                    radioValuesShow.map((value, index) => {
+                                        radioValuesShow[index] = false;
+                                    })
+                                    console.log('pre update radioValuesShow', radioValuesShow)
+                                    radioValuesShow[radioValueIndex] = true;
+                                    console.log('updated radioValuesShow', radioValuesShow)
+                                    this.setState({
+                                        ...this.state,
+                                        radioValuesShow
+                                    })
+                                }}
                                 >
                                 <InputGroup w='80' size='sm'>
                                     <InputLeftElement>
@@ -179,14 +218,24 @@ class QuestionPage extends Component {
                                             }}
                                         />
                                     </InputRightElement>
-                                    <Input
+                                    {!this.state.radioValuesShow[radioValueIndex] && (<Input
                                         size='sm'
                                         value={value}
                                         color='#733D47'
                                         w='80'
                                         readOnly
                                         //onChange={() => this.handleRadioOptionChange(radioValueIndex, value)}
-                                    />
+                                    />)}
+                                    {this.state.radioValuesShow[radioValueIndex] && (
+                                        <Input
+                                        size='sm'
+                                        value={value}
+                                        color='#733D47'
+                                        w='80'
+                                        readOnly
+                                        backgroundColor='#F2D8D5'
+                                        //onChange={() => this.handleRadioOptionChange(radioValueIndex, value)}
+                                    />)}
                                     
                                 </InputGroup>
                             </Radio>                            
@@ -206,13 +255,36 @@ class QuestionPage extends Component {
     )
   }
 
+  handleCheckChange = (checkValueIndex, event) => {
+    console.log('isChecked', event.target.checked)
+    console.log('checkValueIndex', checkValueIndex)
+    let checkValuesShow = this.state.checkValuesShow
+
+    if(!event.target.checked) {
+        if (checkValueIndex !== -1) {
+            checkValuesShow[checkValueIndex] = false;
+        }
+    } else {
+        checkValuesShow[checkValueIndex] = true;
+    }
+    this.setState({
+        ...this.state,
+        checkValuesShow
+    })
+  }
+
   renderMultipleChoice = (checkValues) => {
     return (
         <>
             <Stack direction='column' mt='4' ml='2'>
                 {checkValues.map((value, checkValueIndex) => {
                     return (
-                        <Checkbox size='sm' key={checkValueIndex}>
+                        <Checkbox 
+                            size='sm' 
+                            key={checkValueIndex}
+                            //onChange={this.handleCheckChange(checkValueIndex)}
+                            onChange={(e) => this.handleCheckChange(checkValueIndex, e)}
+                        >
                             <InputGroup w='80' size='sm'>
                                 <InputLeftElement>
                                     <Box bg='#733D47' w='5' textAlign='center' color='white' borderRadius='sm'>
@@ -233,15 +305,23 @@ class QuestionPage extends Component {
                                         }} 
                                     />
                                 </InputRightElement>
-                                <Input 
+                                {!this.state.checkValuesShow[checkValueIndex] && (<Input 
                                     size='sm'
-                                    id='checkBoxInput'
                                     value={this.state.newCheckValue}
                                     placeholder='Add option..'
                                     variant='outline' w='80'
                                     value={value}
                                     readOnly
-                                />
+                                />)}
+                                {this.state.checkValuesShow[checkValueIndex] && (<Input 
+                                    size='sm'
+                                    value={this.state.newCheckValue}
+                                    placeholder='Add option..'
+                                    variant='outline' w='80'
+                                    value={value}
+                                    readOnly
+                                    backgroundColor='#F2D8D5'
+                                />)}
                             </InputGroup>
                         </Checkbox>
                     )

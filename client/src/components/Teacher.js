@@ -26,8 +26,10 @@ class TeacherPage extends Component {
                             question: 'What of the following is used in React.js to increase performance?',
                             selectedQuestionType: 'single',
                             radioValues : ['Original DOM', 'Virtual DOM', 'Both A and B', 'None of the above'],
+                            radioValuesShow: [false, false, false, false],
                             newRadioValue: '',
                             checkValues: ['Original DOM', 'Virtual DOM', 'Both A and B', 'None of the above'],
+                            checkValuesShow: [false, false, false, false],
                             newCheckValue: '',
                             totalMarks: 0,
                             negativeMarks: 0
@@ -36,8 +38,10 @@ class TeacherPage extends Component {
                             question: 'Which of the following keyword is used to create a class inheritance?',
                             selectedQuestionType: 'multiple',
                             radioValues : ['Create', 'Inherits', 'Extends', 'This'],
+                            radioValuesShow: [false, false, false, false],
                             newRadioValue: '',
                             checkValues: ['Create', 'Inherits', 'Extends', 'This'],
+                            checkValuesShow: [false, false, false, false],
                             newCheckValue: '',
                             totalMarks: 0,
                             negativeMarks: 0
@@ -58,27 +62,25 @@ class TeacherPage extends Component {
                                 'Module bundler',
                                 'None of the above'
                             ],
+                            radioValuesShow: [false, false, false, false],
                             newRadioValue: '',
                             checkValues: [
                                 'Transpile all the JavaScript',
                                 'Runs React local development server',
                                 'Module bundler'
                             ],
+                            checkValuesShow: [false, false, false, false],
                             newCheckValue: '',
                             totalMarks: 0,
                             negativeMarks: 0,
                             mandatory: [
                                 {
                                     question:'What is the default port where webpack-server runs?',
-                                    type: 'single',
-                                    radioValues: ['3000', '8080', '3030', '6060'],
-                                    checkValues: ['3000', '8080', '3030', '6060']
-                                },
-                                {
-                                    question: 'What is Babel?',
                                     type: 'multiple',
-                                    radioValues: ['Javascript transpiler', 'Javascript interpreter', 'Javascript compiler'],
-                                    checkValues: ['Javascript transpiler', 'Javascript interpreter', 'Javascript compiler']
+                                    radioValues: ['3000', '8080', '3030', '6060'],
+                                    radioValuesShow: [false, false, false, false],
+                                    checkValues: ['3000', '8080', '3030', '6060'],
+                                    checkValuesShow: [false, false, false, false]
                                 }
                             ]
                         }
