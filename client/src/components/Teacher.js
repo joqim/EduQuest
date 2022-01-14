@@ -104,8 +104,10 @@ class TeacherPage extends Component {
             question: '',
             selectedQuestionType: 'single',
             radioValues : [],
+            radioValuesShow: [],
             newRadioValue: '',
             checkValues: [],
+            checkValuesShow: [],
             newCheckValue: '',
             totalMarks: 0,
             negativeMarks: 0
@@ -160,8 +162,10 @@ class TeacherPage extends Component {
                     question: '',
                     selectedQuestionType: 'single',
                     radioValues : [],
+                    radioValuesShow: [],
                     newRadioValue: '',
                     checkValues: [],
+                    checkValuesShow: [],
                     newCheckValue: '',
                     totalMarks: 0,
                     negativeMarks: 0
@@ -215,6 +219,11 @@ class TeacherPage extends Component {
                             <br/>
                             {sectionIndex!=this.state.sections.length-1 && (
                                 <>
+                                    {/* <div class="separator">
+                                        <div class="line"></div>
+                                        <h2>Top Courses</h2>
+                                        <div class="line"></div>
+                                    </div> */}
                                     <Text fontSize='24' fontWeight='thin' textAlign='center' mt='5' color='#BF9B9B'>-SECTION BREAK-</Text>
                                 </>                                    
                             )}

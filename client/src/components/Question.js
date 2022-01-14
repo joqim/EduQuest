@@ -228,12 +228,12 @@ class QuestionPage extends Component {
                                     />)}
                                     {this.state.radioValuesShow[radioValueIndex] && (
                                         <Input
-                                        size='sm'
-                                        value={value}
-                                        color='#733D47'
-                                        w='80'
-                                        readOnly
-                                        backgroundColor='#F2D8D5'
+                                            size='sm'
+                                            value={value}
+                                            color='#733D47'
+                                            w='80'
+                                            readOnly
+                                            backgroundColor='#F2D8D5'
                                         //onChange={() => this.handleRadioOptionChange(radioValueIndex, value)}
                                     />)}
                                     
