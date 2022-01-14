@@ -504,7 +504,7 @@ class QuestionPage extends Component {
                 </Box>
                 )}
                 {this.state.isMobile && (
-                    <Box bg='#733D47' w='10' h='210' ml='630' mt='7' borderRadius='lg'>
+                    <Box bg='#733D47' w='10' h='210' ml='680' mt='12' borderRadius='lg'>
                     <VStack mt='2' spacing='5'>
                             <AiFillPlusCircle
                                 size='22'
