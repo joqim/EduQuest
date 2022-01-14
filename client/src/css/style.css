@@ -1,6 +1,10 @@
-::-webkit-input-placeholder {
-    text-align: center;
+textarea::placeholder {
+    color:rgb(191, 155, 155);
+    font-size: small;
 }
-:-moz-placeholder {
-    text-align: center;
-}
+
+/* input[type="checkbox"] {
+    -webkit-appearance: none;
+} */
+
+

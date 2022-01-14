@@ -1,5 +1,6 @@
 import { Box, Checkbox, Text, Input} from '@chakra-ui/react'
 import { Component } from 'react'
+import '../css/style.css'
 
 class SectionPage extends Component {
   constructor(props) {
@@ -64,37 +65,41 @@ class SectionPage extends Component {
     console.log('state in section', this.state, 'section Index', this.state.sectionIndex)
     return (
         <Box borderWidth='1px' boxShadow='base' borderRadius='lg' overflow='hidden' w='5xl'>
-            <Box p='6' pt='3'>
-                <Box
-                mt='1'
-                fontWeight='semibold'
-                as='h4'
-                lineHeight='tight'
-                isTruncated
-                >
-                  <Input 
-                    variant='unstyled' 
-                    placeholder='Enter section name' 
-                    value={this.state.name}
-                    onChange={this.handleSectionNameChange}
-                  />
-                </Box>
+          <Box p='6' pt='3' ml='5'>
+            <Box
+            mt='1'
+            fontWeight='semibold'
+            as='h4'
+            lineHeight='tight'
+            isTruncated
+            >
+              <Input
+                fontSize='2xl'
+                variant='unstyled' 
+                placeholder='Section Name' 
+                value={this.state.name}
+                onChange={this.handleSectionNameChange}
+              />
+              </Box>
 
-                <Box color='gray.600'>
-                  <Input 
-                    variant='unstyled' 
-                    placeholder='Enter description name (optional)' 
-                    value={this.state.description}
-                    onChange={this.handleSectionDescriptionChange}
-                  />
-                {/* <Box as='span' color='gray.600' fontSize='sm'>
-                    &nbsp; (optional)
-                </Box> */}
-                </Box>
+              <Box color='gray.600'>
+                <Input 
+                  variant='unstyled' 
+                  placeholder='Description(optional)' 
+                  value={this.state.description}
+                  onChange={this.handleSectionDescriptionChange}
+                />
+              </Box>
             </Box>
           <Box m='5' as='span' color='gray.600' fontSize='sm'>
-            <Checkbox colorScheme='green' mb='3' checked={this.state.shuffle} onChange={this.handleSectionShuffleChange}>
-              <Text color='gray.600' fontSize='sm'>
+            <Checkbox 
+              borderColor='#733D47' 
+              colorScheme='green' 
+              mb='3' 
+              checked={this.state.shuffle} 
+              onChange={this.handleSectionShuffleChange}
+              >
+              <Text color='#733D47' fontSize='sm'>
                 Shuffle Questions
               </Text>
             </Checkbox>

@@ -53,14 +53,14 @@ class TeacherPage extends Component {
                             question: 'What is the use of "webpack" command in React.js?',
                             selectedQuestionType: 'single',
                             radioValues : [
-                                'Transpile all the JavaScript down into one file', 
+                                'Transpile all JavaScript', 
                                 'Runs React local development server', 
                                 'Module bundler',
                                 'None of the above'
                             ],
                             newRadioValue: '',
                             checkValues: [
-                                'Transpile all the JavaScript down into one file',
+                                'Transpile all the JavaScript',
                                 'Runs React local development server',
                                 'Module bundler'
                             ],
@@ -71,12 +71,14 @@ class TeacherPage extends Component {
                                 {
                                     question:'What is the default port where webpack-server runs?',
                                     type: 'single',
-                                    radioValues: ['3000', '8080', '3030', '6060']
+                                    radioValues: ['3000', '8080', '3030', '6060'],
+                                    checkValues: ['3000', '8080', '3030', '6060']
                                 },
                                 {
                                     question: 'What is Babel?',
                                     type: 'multiple',
-                                    radioValues: ['Javascript transpiler', 'Javascript interpreter', 'Javascript compiler']
+                                    radioValues: ['Javascript transpiler', 'Javascript interpreter', 'Javascript compiler'],
+                                    checkValues: ['Javascript transpiler', 'Javascript interpreter', 'Javascript compiler']
                                 }
                             ]
                         }
@@ -211,7 +213,7 @@ class TeacherPage extends Component {
                             <br/>
                             {sectionIndex!=this.state.sections.length-1 && (
                                 <>
-                                    <Text fontSize='2xl' textAlign='center' mt='5'>-SECTION BREAK-</Text>
+                                    <Text fontSize='24' fontWeight='thin' textAlign='center' mt='5' color='#BF9B9B'>-SECTION BREAK-</Text>
                                 </>                                    
                             )}
                         </>
@@ -220,13 +222,16 @@ class TeacherPage extends Component {
                 <Flex>
                     <Spacer />
                     <Box>
-                        <Button colorScheme='teal' variant='ghost' size='sm' mr='5'>
+                        <Button color='#BF9B9B' fontWeight='thin' variant='ghost' size='sm' mr='5'>
                             Discard
                         </Button>
-                        <Button colorScheme='teal' 
+                        <Button
+                            backgroundColor='#733D47'
+                            color='#FFFFFF'
                             variant='solid' 
                             size='sm'
-                            mr='20'
+                            mr='24'
+                            fontWeight='thin'
                             onClick={this.handlePublishClicked}>
                             Publish
                         </Button>

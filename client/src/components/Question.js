@@ -1,19 +1,18 @@
 import { Component } from 'react'
-import { AddIcon } from "@chakra-ui/icons"
 import { Stack, Text } from "@chakra-ui/layout";
 import { Divider, Box, SimpleGrid, Select, Input, 
     FormHelperText, FormControl, RadioGroup, Radio, Button, Checkbox,
-    Textarea, InputRightAddon, InputGroup, Tooltip, VStack
+    Textarea, InputRightAddon, InputGroup, Tooltip, VStack, InputRightElement, InputLeftElement
 } from '@chakra-ui/react'
-import { IconButton } from "@chakra-ui/button";
-import { FilePond } from 'react-filepond';
+// import { FilePond } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
-import { MdRemoveCircleOutline } from "react-icons/md";
-import { ImCopy } from "react-icons/im";
-import { GrGallery } from "react-icons/gr";
-import { AiOutlinePlusCircle } from "react-icons/ai";
+import { AiFillPlusCircle, AiFillCopy } from "react-icons/ai";
+import { FaTrash } from "react-icons/fa";
 import { BiTrashAlt } from "react-icons/bi";
 import { RiSpotifyLine } from "react-icons/ri";
+import { IoMdAddCircle, IoMdImage } from "react-icons/io";
+import { IoCloseCircleSharp } from "react-icons/io5";
+import '../css/style.css'
 
 class QuestionPage extends Component {
     constructor(props) {
@@ -143,52 +142,81 @@ class QuestionPage extends Component {
     })
   }
 
-  renderSingleChoice = () => {
+  handleRadioOptionChange = (index, value) => {
+    console.log('inside handleRadioOptionChange', index, value)
+  }
+
+  renderSingleChoice = (radioValues) => {
     //console.log('inside renderSingleChoice')
+    //let radioValues = this.state.radioValues
+    let isChecked = false;
     return (
         <>
-            <RadioGroup mt='4'>
+            <RadioGroup mt='4' ml='2'>
                 <Stack direction='column'>
-                    {this.state.radioValues.map((value, radioValueIndex) => {
+                    {radioValues.map((value, radioValueIndex) => {
                         return (
                             <Radio 
                                 value={value} 
-                                key={radioValueIndex}>
-                                <Input 
-                                    size='sm' 
-                                    value={value} 
-                                    variant='outline' 
-                                    w='80'
-                                    readOnly
-                                    //onChange={() => this.handleRadioOptionChange(radioValueIndex)}
-                                />
-                                <Tooltip label="Delete option">
-                                    <IconButton
-                                        // color='red'
-                                        ml='2' 
-                                        size='sm' 
-                                        icon={<MdRemoveCircleOutline />} 
-                                        isRound='true'
-                                        onClick={() => {
-                                            let radioValues = this.state.radioValues;
-                                            if (radioValueIndex > -1) {
-                                                radioValues.splice(radioValueIndex, 1);
-                                            }
-                                            this.setState({
-                                                ...this.state,
-                                                radioValues
-                                            })
-                                        }} 
-                                    />
-                                </Tooltip>
+                                key={radioValueIndex}
+                                onClick={() => {
+                                    isChecked = true;
+                                    console.log('isChecked', isChecked);
+                                }}
+                                >
+                                <InputGroup w='80' size='sm'>
+                                    <InputLeftElement>
+                                        <Box bg='#733D47' w='5' textAlign='center' color='white' borderRadius='sm'>
+                                            {String.fromCharCode(65 + parseInt(radioValueIndex))}
+                                        </Box>
+                                    </InputLeftElement>
+                                    <InputRightElement  color='#BF9B9B'>
+                                        <IoCloseCircleSharp
+                                            size='22'
+                                            onClick={() => {
+                                                if (radioValueIndex > -1) {
+                                                    radioValues.splice(radioValueIndex, 1);
+                                                }
+                                                this.setState({
+                                                    ...this.state,
+                                                    radioValues
+                                                })
+                                            }}
+                                        />
+                                    </InputRightElement>
+                                    {console.log('isChecked before input', isChecked)}
+                                    {isChecked && (
+                                        <Input
+                                            size='sm' 
+                                            value={value}
+                                            color='#733D47'
+                                            backgroundColor='#F2D8D5'
+                                            w='80'
+                                            readOnly
+                                            //onChange={() => this.handleRadioOptionChange(radioValueIndex, value)}
+                                        />
+                                    )}
+                                    {!isChecked && (
+                                        <Input
+                                            size='sm'
+                                            value={value}
+                                            color='#733D47'
+                                            w='80'
+                                            readOnly
+                                            //onChange={() => this.handleRadioOptionChange(radioValueIndex, value)}
+                                        />
+                                    )}
+                                    
+                                </InputGroup>
                             </Radio>                            
                         )
                     })}
                 </Stack>
             </RadioGroup>
             <Input 
-                size='sm' ml='6' mt='2' 
+                size='sm' ml='8' mt='2' 
                 placeholder='Add option..' variant='outline' w='80'
+                fontWeight='thin'
                 onChange={this.handleNewRadioValueChange}
                 onKeyDown={this.handleKeyDownForRadio}
                 value={this.state.newRadioValue}
@@ -197,49 +225,54 @@ class QuestionPage extends Component {
     )
   }
 
-  renderMultipleChoice = () => {
+  renderMultipleChoice = (checkValues) => {
     return (
         <>
-            <Stack direction='column' mt='4'>
-                {this.state.checkValues.map((value, checkValueIndex) => {
+            <Stack direction='column' mt='4' ml='2'>
+                {checkValues.map((value, checkValueIndex) => {
                     return (
-                        <Checkbox colorScheme='blue' size='sm' key={checkValueIndex}>
-                            <Input size='sm' 
-                                value={this.state.newCheckValue}
-                                placeholder='Add option..'
-                                variant='outline' w='80'
-                                value={value}
-                                readOnly
-                            />
-                            <Tooltip label="Delete option">
-                                <IconButton
-                                    // color='red'
-                                    ml='2' 
-                                    size='sm' 
-                                    icon={<MdRemoveCircleOutline />} 
-                                    isRound='true'
-                                    onClick={() => {
-                                        let checkValues = this.state.checkValues;
-                                        if (checkValueIndex > -1) {
-                                            checkValues.splice(checkValueIndex, 1);
-                                        }
-                                        this.setState({
-                                            ...this.state,
-                                            checkValues
-                                        })
-                                    }} 
+                        <Checkbox size='sm' key={checkValueIndex}>
+                            <InputGroup w='80' size='sm'>
+                                <InputLeftElement>
+                                    <Box bg='#733D47' w='5' textAlign='center' color='white' borderRadius='sm'>
+                                        {String.fromCharCode(65 + parseInt(checkValueIndex))}
+                                    </Box>
+                                </InputLeftElement>
+                                <InputRightElement  color='#BF9B9B'>
+                                    <IoCloseCircleSharp
+                                        size='22'
+                                        onClick={() => {
+                                            if (checkValueIndex > -1) {
+                                                checkValues.splice(checkValueIndex, 1);
+                                            }
+                                            this.setState({
+                                                ...this.state,
+                                                checkValues
+                                            })
+                                        }} 
+                                    />
+                                </InputRightElement>
+                                <Input 
+                                    size='sm'
+                                    id='checkBoxInput'
+                                    value={this.state.newCheckValue}
+                                    placeholder='Add option..'
+                                    variant='outline' w='80'
+                                    value={value}
+                                    readOnly
                                 />
-                            </Tooltip>
+                            </InputGroup>
                         </Checkbox>
                     )
                 })}
             </Stack>
             <Input 
-                size='sm' ml='5' mt='2' 
+                size='sm' ml='7' mt='2' 
                 placeholder='Add option..' variant='outline' w='80'
                 onChange={this.handleNewCheckValueChange}
                 onKeyDown={this.handleKeyDownForCheck}
                 value={this.state.newCheckValue}
+                fontWeight='thin'
             />
         </>
     )
@@ -249,8 +282,9 @@ class QuestionPage extends Component {
     return (
         <>
             <Textarea
+                bg='#F2D8D5'
                 mt='2'
-                placeholder='Begin typing..'
+                placeholder='Paragraph'
                 size='sm'
                 resize
                 h='32'
@@ -263,12 +297,19 @@ class QuestionPage extends Component {
   renderFileUpload = () => {
     return (
         <>
-            <Divider borderColor='black' orientation='horizontal' mb='10' mt='2'/>
-            <FilePond
+            <Divider borderColor='#733D47' orientation='horizontal' mb='10' mt='2'/>
+            {/* <FilePond
+                bg='#F2D8D5 !important'
                 allowMultiple={true}
                 maxParallelUploads={5}
                 name='images'
-            />
+            /> */}
+            <Text 
+                fontSize='32'
+                fontWeight='light'
+                textAlign='center'
+                color='#BF9B9B'
+            >File Upload</Text>
         </>
     )
   }
@@ -354,47 +395,44 @@ class QuestionPage extends Component {
         let sectionIndex = this.state.sectionIndex;
         return (
             <>
-                <VStack position='relative' left='35%'>
-                <Tooltip label="Add a new question">
-                    <IconButton 
-                        size='sm' 
-                        icon={<AiOutlinePlusCircle />} 
-                        isRound='true'
-                        onClick={() => this.props.addQuestion(sectionIndex, questionIndex)} 
-                    />
-                </Tooltip>
-                <Tooltip label="Add images">
-                    <IconButton size='sm' ml={2} icon={<GrGallery />} isRound='true' ></IconButton>
-                </Tooltip>
-                <Tooltip label="Clone question">
-                    <IconButton 
-                        size='sm' 
-                        ml={2} 
-                        icon={<ImCopy />} 
-                        isRound='true' 
-                        onClick={() => this.props.cloneQuestion(sectionIndex, questionIndex)} 
-                    />
-                </Tooltip>
-                <Tooltip label="Delete question">
-                    <IconButton 
-                        size='sm' 
-                        ml={2} 
-                        icon={<BiTrashAlt />} 
-                        isRound='true'
-                        onClick={() => this.props.deleteQuestion(sectionIndex, questionIndex)}
-                        //disabled={this.state.sections[sectionIndex].questions.length===1}
-                        />
-                </Tooltip>
-                <Tooltip label="Add a new section">
-                    <IconButton 
-                        size='sm' 
-                        ml={2} 
-                        icon={<RiSpotifyLine />} 
-                        isRound='true' 
-                        onClick={() => this.props.addNewSection(sectionIndex, questionIndex)}
-                    />
-                </Tooltip>
-            </VStack>
+                <Box bg='#733D47' w='10' h='210' ml='470' borderRadius='lg'>
+                    <VStack mt='2' spacing='5'>
+                        {/* <Tooltip label="Add a new question"> */}
+                            <AiFillPlusCircle
+                                size='22'
+                                color='#F2D8D5'
+                                onClick={() => this.props.addQuestion(sectionIndex, questionIndex)} 
+                            />
+                        {/* </Tooltip>
+                        <Tooltip label="Add images"> */}
+                            <IoMdImage
+                                size='22'
+                                color='#F2D8D5'
+                            />
+                        {/* </Tooltip>
+                        <Tooltip label="Clone question"> */}
+                            <AiFillCopy
+                                size='22'
+                                color='#F2D8D5'
+                                onClick={() => this.props.cloneQuestion(sectionIndex, questionIndex)} 
+                            />
+                        {/* </Tooltip>
+                        <Tooltip label="Delete question"> */}
+                            <FaTrash
+                                size='22'
+                                color='#F2D8D5'
+                                onClick={() => this.props.deleteQuestion(sectionIndex, questionIndex)}
+                            />
+                        {/* </Tooltip>
+                        <Tooltip label="Add a new section"> */}
+                            <RiSpotifyLine
+                                size='22'
+                                color='#F2D8D5' 
+                                onClick={() => this.props.addNewSection(sectionIndex, questionIndex)}
+                            />
+                        {/* </Tooltip> */}
+                    </VStack>
+                </Box>
             </>
         )
     }
@@ -404,7 +442,7 @@ class QuestionPage extends Component {
     }
 
   render() {
-    //console.log('state in question', this.state)
+    console.log('state in question', this.state)
     return (
         <>
         <Box onClick={() => this.setState({
@@ -419,6 +457,9 @@ class QuestionPage extends Component {
                 <Stack>
                     <FormControl mt='2'>
                         <Select placeholder='Select Question Type'
+                            color='#733D47'
+                            variant='filled'
+                            bg='#F2D8D5'
                             value={this.state.selectedQuestionType}
                             onChange={this.handleQuestionTypeChange}
                             size='sm' variant='filled' w='40'
@@ -428,38 +469,61 @@ class QuestionPage extends Component {
                             <option value='paragraph'>Paragraph</option>
                             <option value='upload'>File Upload</option>
                         </Select>
-                        <FormHelperText mt='4'>Total marks</FormHelperText>
-                        <InputGroup size='sm'>
-                            <Input placeholder='enter marks' value={this.state.totalMarks} w='24' 
-                                onChange={this.handleTotalMarksChange}/>
-                            <InputRightAddon  children='marks' />
+                        <FormHelperText mt='4' color='#733D47' fontSize='12'>Total marks</FormHelperText>
+                        <InputGroup w='40' size='sm' borderColor='#733D47'>
+                            <InputRightElement
+                                color='#BF9B9B'
+                                mr='2'
+                                pointerEvents='none'
+                                children='marks'
+                            />
+                            <Input 
+                                placeholder='enter marks' 
+                                textAlign='center' 
+                                value={this.state.totalMarks} 
+                                color='#733D47'
+                                onChange={this.handleTotalMarksChange}
+                            />
                         </InputGroup>
-                        <FormHelperText>Negative marks</FormHelperText>
-                        <InputGroup size='sm'>
-                            <Input size='sm' placeholder='enter marks' value={this.state.negativeMarks} w='24'
+
+                        <FormHelperText color='#733D47' fontSize='12'>Negative marks</FormHelperText>
+                        <InputGroup w='40' size='sm' borderColor='#733D47'>
+                            <InputRightElement
+                                color='#BF9B9B'
+                                mr='2'
+                                pointerEvents='none'
+                                children='marks'
+                            />
+                            <Input 
+                                placeholder='enter marks' 
+                                textAlign='center' 
+                                value={this.state.negativeMarks} 
+                                color='#733D47'
                                 onChange={this.handleNegativeMarksChange}
                             />
-                            <InputRightAddon  children='marks' />
                         </InputGroup>
                         {this.state.isMandatoryGiven && (
                             <>
-                                <FormHelperText>Number of questions mandatory to attempt</FormHelperText>
-                                <InputGroup size='sm'>
-                                    <Input
-                                        type='number'
-                                        max='5'
-                                        size='sm' 
+                                <FormHelperText fontSize='12.5' mt='2' color='#733D47'>Number of questions mandatory to attempt</FormHelperText>
+                                <InputGroup w='40' size='sm' borderColor='#733D47'>
+                                    <InputRightElement
+                                        color='#BF9B9B'
+                                        mr='5'
+                                        pointerEvents='none'
+                                        children='questions'
+                                    />
+                                    <Input 
                                         placeholder='enter number' 
+                                        textAlign='center' 
                                         value={this.state.mandatory.length} 
-                                        w='24'
+                                        color='#733D47'
                                         onChange={this.handleMandatoryNumberChange}
                                     />
-                                    <InputRightAddon  children='question' />
                                 </InputGroup>
                             </>
                         )}
                         <br/>
-                        <Button size='sm' ml='2' leftIcon={<AddIcon color='red.500'/>} variant='ghost'>
+                        <Button size='md' color='#733D47' leftIcon={<IoMdAddCircle/>} variant='ghost'>
                             Add Optional
                         </Button>
                     </FormControl>
@@ -468,15 +532,17 @@ class QuestionPage extends Component {
                 <Divider ml='-30' borderColor='black' orientation='vertical' />
                 <Box height={this.state.boxHeight} ml='-310' overflowY='scroll'>
                     <FormControl>
-                        <Input 
-                            size='sm' 
-                            placeholder='Enter question'
+                        <Input
+                            color='#733D47'
+                            size='sm'
+                            fontWeight='medium'
+                            placeholder='Type your question here..'
                             value={this.state.question} 
                             onChange={this.handleQuestionChange}
                             variant='unstyled'
                         />
-                        {this.state.selectedQuestionType==='single' && this.renderSingleChoice()}
-                        {this.state.selectedQuestionType==='multiple' && this.renderMultipleChoice()}
+                        {this.state.selectedQuestionType==='single' && this.renderSingleChoice(this.state.radioValues)}
+                        {this.state.selectedQuestionType==='multiple' && this.renderMultipleChoice(this.state.checkValues)}
                         {this.state.selectedQuestionType==='paragraph' && this.renderParagraph()}
                         {this.state.selectedQuestionType==='upload' && this.renderFileUpload()}
 
@@ -497,8 +563,10 @@ class QuestionPage extends Component {
                                             value={this.state.mandatory[mandKey].question} 
                                             onChange={this.handleMandQuestionChange}
                                             variant='unstyled'
+                                            fontWeight='medium'
+                                            color='#733D47'
                                         />
-                                        {this.renderSingleChoice()}
+                                        {this.renderSingleChoice(this.state.mandatory[mandKey].radioValues)}
                                     </>
                                 )
                             } else if(mand.type==='multiple') {
@@ -512,10 +580,11 @@ class QuestionPage extends Component {
                                             value={this.state.mandatory[mandKey].question} 
                                             onChange={this.handleQuestionChange}
                                             variant='unstyled'
-                                            readOnly
+                                            fontWeight='medium'
+                                            color='#733D47'
                                         />
 
-                                        {this.renderMultipleChoice()}
+                                        {this.renderMultipleChoice(this.state.mandatory[mandKey].checkValues)}
                                     </>      
                                 )
                             } else if(mand.type==='paragraph') {
