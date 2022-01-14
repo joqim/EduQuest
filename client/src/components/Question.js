@@ -616,11 +616,8 @@ class QuestionPage extends Component {
                                 return (
                                     <>
                                         <Text
-                                            fontSize='1xl' 
-                                            textAlign='center' 
-                                            mt='5'
-                                            mb='2'
-                                        >-OR-</Text>
+                                            fontSize='24' fontWeight='thin' textAlign='center' mt='2' color='#BF9B9B'
+                                        >OR</Text>
                                         <Input 
                                             size='sm' 
                                             placeholder='Enter question'
@@ -637,7 +634,9 @@ class QuestionPage extends Component {
                             } else if(mand.type==='multiple') {
                                 return (
                                     <>
-                                        <Text fontSize='1xl' textAlign='center' mt='5'>-OR-</Text>
+                                        <Text
+                                            fontSize='24' fontWeight='thin' textAlign='center' mt='2' color='#BF9B9B'
+                                        >OR</Text>
                                         <Input
                                             key={mandKey}
                                             size='sm' 
@@ -655,7 +654,9 @@ class QuestionPage extends Component {
                             } else if(mand.type==='paragraph') {
                                 return (
                                     <>
-                                        <Text fontSize='1xl' textAlign='center' mt='5'>-OR-</Text>
+                                        <Text
+                                            fontSize='20' fontWeight='thin' textAlign='center' mt='2' color='#BF9B9B'
+                                        >OR</Text>
                                         <Input 
                                             size='sm' 
                                             placeholder='Enter question'
@@ -670,7 +671,9 @@ class QuestionPage extends Component {
                             } else if(mand.type==='upload') {
                                 return (
                                     <>
-                                        <Text fontSize='1xl' textAlign='center' mt='5'>-OR-</Text>
+                                        <Text
+                                            fontSize='24' fontWeight='thin' textAlign='center' mt='2' color='#BF9B9B'
+                                        >OR</Text>
                                         <Input 
                                             size='sm' 
                                             placeholder='Enter question'
