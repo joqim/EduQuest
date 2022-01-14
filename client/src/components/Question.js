@@ -149,7 +149,6 @@ class QuestionPage extends Component {
   renderSingleChoice = (radioValues) => {
     //console.log('inside renderSingleChoice')
     //let radioValues = this.state.radioValues
-    let isChecked = false;
     return (
         <>
             <RadioGroup mt='4' ml='2'>
@@ -159,10 +158,6 @@ class QuestionPage extends Component {
                             <Radio 
                                 value={value} 
                                 key={radioValueIndex}
-                                onClick={() => {
-                                    isChecked = true;
-                                    console.log('isChecked', isChecked);
-                                }}
                                 >
                                 <InputGroup w='80' size='sm'>
                                     <InputLeftElement>
@@ -184,28 +179,14 @@ class QuestionPage extends Component {
                                             }}
                                         />
                                     </InputRightElement>
-                                    {console.log('isChecked before input', isChecked)}
-                                    {isChecked && (
-                                        <Input
-                                            size='sm' 
-                                            value={value}
-                                            color='#733D47'
-                                            backgroundColor='#F2D8D5'
-                                            w='80'
-                                            readOnly
-                                            //onChange={() => this.handleRadioOptionChange(radioValueIndex, value)}
-                                        />
-                                    )}
-                                    {!isChecked && (
-                                        <Input
-                                            size='sm'
-                                            value={value}
-                                            color='#733D47'
-                                            w='80'
-                                            readOnly
-                                            //onChange={() => this.handleRadioOptionChange(radioValueIndex, value)}
-                                        />
-                                    )}
+                                    <Input
+                                        size='sm'
+                                        value={value}
+                                        color='#733D47'
+                                        w='80'
+                                        readOnly
+                                        //onChange={() => this.handleRadioOptionChange(radioValueIndex, value)}
+                                    />
                                     
                                 </InputGroup>
                             </Radio>                            
