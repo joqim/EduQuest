@@ -6,7 +6,7 @@ This app, designed with a user-friendly interface, utilizes Chakra UI to enhance
 The application was initially deployed on Heroku and then later turbocharged on Fly, providing a seamless experience at Edvora Assessment.
 
 # Purpose and Features
-Aims to streamline the assessment process, offering a comprehensive and efficient tool for educators and learners. 
+Aims to streamline the assessment process, offering a comprehensive and efficient tool for educators and learners. <br/>
 Its features include:
 
 **Interactive and Dynamic Interface**: 
